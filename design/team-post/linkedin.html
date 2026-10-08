@@ -6,139 +6,105 @@
 <title>HIH7 LinkedIn Team Posts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Mada:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   HIH7 — LinkedIn team post, 1200 × 720 (export @2x)
-   Swiss grid on the left, the HIH hexagon as a photo window on
-   the right. Flat brand colours only — no glow, no streaks.
+   HIH7 — LinkedIn team post, rebuilt from the original Canva
+   design (same background, lockups and layout), 1600 × 962.
 ============================================================ */
-:root {
-  --violet: #3a12e6;   /* brochure electric violet — also the KSAU logo knock-out colour */
-  --indigo: #14026a;
-  --lilac: #a98bff;
-  --lavender: #d9ccff;
-  --white: #ffffff;
-  --rule: rgba(255, 255, 255, .28);
-}
+:root { --lilac: #a985ff; --lavender: #c4b0ff; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0a0238; font-family: "Schibsted Grotesk", "Segoe UI", sans-serif; padding: 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
+body { background: #0a0238; font-family: "Mada", sans-serif; padding: 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
 
-.post { width: 1200px; height: 720px; position: relative; overflow: hidden; background: var(--violet); color: var(--white); }
+.post { width: 1600px; height: 962px; position: relative; overflow: hidden; color: #fff;
+  background: #0d0550 url(assets/bg.jpg) center / cover no-repeat; }
+.post > * { position: absolute; }
 
-/* ---- right panel + hexagon window ---- */
-.panel { position: absolute; top: 0; right: 0; bottom: 0; width: 470px; background: var(--lavender); }
-.hex-frame, .hex { position: absolute; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
-.hex-frame { left: 670px; top: 58px; width: 520px; height: 604px; background: var(--indigo); }
-.hex { left: 678px; top: 67px; width: 504px; height: 586px; background: linear-gradient(180deg, #8f6bff, #5a2ef0); display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
-.hex img { width: 100%; height: 100%; object-fit: cover; }
-.hex svg { width: 330px; height: 400px; }
-/* the mark's top and bottom chevrons, set on the hexagon tips */
-.chev { position: absolute; left: 870px; width: 120px; height: 34px; }
-.chev.top { top: 14px; }
-.chev.bot { bottom: 14px; transform: scaleY(-1); }
+.lattice { left: 0; top: 0; width: 1600px; height: 962px; }
+.mark { left: 173px; top: 73px; width: 116px; }
+.wordmark { left: 110px; top: 226px; width: 219px; }
 
-/* ---- left column: Swiss grid ---- */
-.col { position: absolute; left: 72px; top: 0; bottom: 0; width: 560px; }
-.lockup { position: absolute; top: 52px; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; }
-.lockup .mark { display: flex; align-items: center; gap: 12px; }
-.lockup img { width: 46px; height: 46px; filter: brightness(0) invert(1); }
-.lockup .ar { font-family: "IBM Plex Sans Arabic", sans-serif; font-size: 17px; font-weight: 700; line-height: 1.1; }
-.lockup .en { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lavender); }
-.lockup .ed { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--lavender); text-align: right; line-height: 1; }
-.lockup .ed b { display: block; font-size: 34px; font-weight: 900; letter-spacing: -.02em; color: var(--white); margin-top: 4px; }
+.t { left: 90px; white-space: nowrap; line-height: 1; }
+.h1 { top: 368px; font-weight: 700; color: transparent;
+  background: linear-gradient(90deg, #c7b0ff 0%, #a07aff 55%, #8c5cff 100%); -webkit-background-clip: text; background-clip: text; }
+.h2 { top: 496px; font-weight: 700; }
+.p1 { top: 562px; font-weight: 600; color: var(--lilac); }
+.p2 { top: 611px; font-weight: 600; color: var(--lilac); }
+.p3 { top: 680px; font-weight: 700; }
+.p4 { top: 727px; font-weight: 700; }
 
-.label { position: absolute; top: 160px; left: 0; right: 0; font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lavender); padding-top: 12px; border-top: 1px solid var(--rule); }
-.name { position: absolute; top: 200px; left: 0; right: 0; font-size: 78px; font-weight: 900; line-height: .92; letter-spacing: -.035em; }
-.role { position: absolute; top: 372px; left: 0; font-size: 22px; font-weight: 700; color: var(--lavender); }
-.line { position: absolute; top: 414px; left: 0; width: 500px; font-size: 19px; line-height: 1.45; font-weight: 500; color: rgba(255,255,255,.88); }
-.line b { color: var(--white); font-weight: 700; }
+/* portrait */
+.glow { left: 1000px; top: 560px; width: 580px; opacity: .95; }
+.photo { left: 1066px; top: 262px; width: 432px; height: 470px; display: flex; align-items: flex-end; justify-content: center;
+  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%); mask-image: linear-gradient(180deg, #000 72%, transparent 100%); }
+.photo img { max-width: 100%; max-height: 100%; object-fit: contain; object-position: bottom; }
+.photo svg { width: 432px; height: 470px; }
 
-.meta { position: absolute; top: 530px; left: 0; right: 0; display: grid; grid-template-columns: 1.15fr 1.15fr .7fr; border-top: 1px solid var(--rule); }
-.meta div { padding: 12px 16px 0 0; }
-.meta div + div { padding-left: 16px; border-left: 1px solid var(--rule); }
-.meta small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--lavender); }
-.meta b { display: block; margin-top: 4px; font-size: 17px; font-weight: 700; }
+.plate { left: 1063px; top: 722px; width: 431px; height: 83px; background: rgba(36, 18, 120, .62); border-left: 8px solid #9a72ff; }
+.plate .name { position: absolute; left: 28px; top: 10px; font-size: 30px; font-weight: 700; line-height: 1; }
+.plate .role { position: absolute; right: 100px; top: 47px; font-size: 25px; font-weight: 600; color: var(--lavender); line-height: 1; white-space: nowrap; }
 
-.hosts { position: absolute; bottom: 40px; left: 0; display: flex; align-items: center; gap: 22px; }
-.hosts .ksau { height: 40px; }
-.hosts .mushkat { height: 25px; }
-.hosts i { width: 1px; height: 34px; background: var(--rule); }
+.hosts { left: 1460px; top: 880px; width: 118px; }
+.rule { left: 0; top: 943px; width: 1434px; height: 1px; background: rgba(255, 255, 255, .55); }
 </style>
 </head>
 <body>
 
 <template id="tpl">
   <section class="post">
-    <div class="panel"></div>
-    <div class="hex-frame"></div>
-    <div class="hex"></div>
-    <svg class="chev top" viewBox="0 0 140 40"><path d="M0 40 L70 0 L140 40 L118 40 L70 13 L22 40 Z" fill="#3a12e6"/></svg>
-    <svg class="chev bot" viewBox="0 0 140 40"><path d="M0 40 L70 0 L140 40 L118 40 L70 13 L22 40 Z" fill="#3a12e6"/></svg>
+    <svg class="lattice" viewBox="0 0 1600 962" aria-hidden="true"><defs><linearGradient id="lf" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><g stroke="url(#lf)" stroke-width="1"><line x1="544" y1="0" x2="1064" y2="600"/><line x1="1064" y1="0" x2="544" y2="600"/><line x1="590" y1="0" x2="1110" y2="600"/><line x1="1110" y1="0" x2="590" y2="600"/><line x1="636" y1="0" x2="1156" y2="600"/><line x1="1156" y1="0" x2="636" y2="600"/><line x1="682" y1="0" x2="1202" y2="600"/><line x1="1202" y1="0" x2="682" y2="600"/><line x1="728" y1="0" x2="1248" y2="600"/><line x1="1248" y1="0" x2="728" y2="600"/><line x1="774" y1="0" x2="1294" y2="600"/><line x1="1294" y1="0" x2="774" y2="600"/><line x1="820" y1="0" x2="1340" y2="600"/><line x1="1340" y1="0" x2="820" y2="600"/><line x1="866" y1="0" x2="1386" y2="600"/><line x1="1386" y1="0" x2="866" y2="600"/><line x1="912" y1="0" x2="1432" y2="600"/><line x1="1432" y1="0" x2="912" y2="600"/><line x1="958" y1="0" x2="1478" y2="600"/><line x1="1478" y1="0" x2="958" y2="600"/><line x1="1004" y1="0" x2="1524" y2="600"/><line x1="1524" y1="0" x2="1004" y2="600"/><line x1="1050" y1="0" x2="1570" y2="600"/><line x1="1570" y1="0" x2="1050" y2="600"/><line x1="1096" y1="0" x2="1616" y2="600"/><line x1="1616" y1="0" x2="1096" y2="600"/><line x1="1142" y1="0" x2="1662" y2="600"/><line x1="1662" y1="0" x2="1142" y2="600"/><line x1="1188" y1="0" x2="1708" y2="600"/><line x1="1708" y1="0" x2="1188" y2="600"/><line x1="1234" y1="0" x2="1754" y2="600"/><line x1="1754" y1="0" x2="1234" y2="600"/><line x1="1280" y1="0" x2="1800" y2="600"/><line x1="1800" y1="0" x2="1280" y2="600"/><line x1="1326" y1="0" x2="1846" y2="600"/><line x1="1846" y1="0" x2="1326" y2="600"/><line x1="1372" y1="0" x2="1892" y2="600"/><line x1="1892" y1="0" x2="1372" y2="600"/><line x1="1418" y1="0" x2="1938" y2="600"/><line x1="1938" y1="0" x2="1418" y2="600"/></g></svg>
+    <img class="mark" src="assets/hih-mark.png" alt="">
+    <img class="wordmark" src="assets/hih-wordmark.png" alt="Health Innovation Hackathon">
 
-    <div class="col">
-      <div class="lockup">
-        <div class="mark">
-          <img src="../../assets/logo.png" alt="">
-          <div><div class="ar">هاكاثون الابتكار الصحي</div><div class="en">Health Innovation Hackathon</div></div>
-        </div>
-        <div class="ed">Edition<b>07</b></div>
-      </div>
+    <div class="t h1" data-w="777">Beyond Visions and Ideas:</div>
+    <div class="t h2" data-w="483">Shaping the Future of Healthcare</div>
+    <div class="t p1" data-w="530"></div>
+    <div class="t p2" data-w="612">at the 7th Health Innovation Hackathon</div>
+    <div class="t p3" data-w="666">Where innovation becomes the starting point</div>
+    <div class="t p4" data-w="309">for what comes next.</div>
 
-      <div class="label"></div>
-      <div class="name"></div>
-      <div class="role"></div>
-      <p class="line"></p>
+    <img class="glow" src="assets/glow.png" alt="">
+    <div class="photo"></div>
+    <div class="plate"><div class="name"></div><div class="role"></div></div>
 
-      <div class="meta">
-        <div><small>Dates</small><b>23–25 Jan 2027</b></div>
-        <div><small>Venue</small><b>KSAU-HS, Riyadh</b></div>
-        <div><small>Tracks</small><b>7</b></div>
-      </div>
-
-      <div class="hosts">
-        <img class="ksau" src="../../assets/partners/ksau-white.svg" alt="KSAU-HS">
-        <i></i>
-        <img class="mushkat" src="../../assets/partners/mushkat-white.png" alt="Mushkat Incubator for Health Innovation">
-      </div>
-    </div>
+    <img class="hosts" src="assets/ksau-mushkat-white.png" alt="KSAU-HS · Mushkat Incubator for Health Innovation">
+    <div class="rule"></div>
   </section>
 </template>
 
 <script>
-const TEAMS = {
-  media: "Media", pr: "Public Relations", tech: "Technical", design: "Design",
-  content: "Content", decor: "Decor", operations: "Operations",
-  logistics: "Logistics", protocol: "Protocol & VIP",
-};
+/* placeholder until a cut-out photo is supplied */
+const SILHOUETTE = '<svg viewBox="0 0 432 470"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".62" stop-color="#f1ebff"/><stop offset="1" stop-color="#c9b3ff" stop-opacity=".55"/></linearGradient></defs><g fill="url(#sg)" opacity=".94"><circle cx="216" cy="130" r="123"/><path d="M4 470V350c0-60 40-96 110-96 30 34 64 50 102 50s72-16 102-50c70 0 110 36 110 96v120Z"/></g></svg>';
 
-/* placeholder until a photo is supplied */
-const SILHOUETTE = '<svg viewBox="0 0 330 400"><circle cx="165" cy="150" r="78" fill="#d9ccff" opacity=".55"/><path d="M20 400c0-96 64-160 145-160s145 64 145 160Z" fill="#d9ccff" opacity=".55"/></svg>';
-
-function render({ name, role, team, photo }) {
+function render({ name, role, photo, volunteer }) {
   const node = document.getElementById("tpl").content.firstElementChild.cloneNode(true);
-  const vol = role === "Volunteer";
-  node.querySelector(".label").textContent = vol ? "Volunteering at HIH7" : "Meet the organizing team";
-  node.querySelector(".name").innerHTML = name.replace(" ", "<br>");
-  node.querySelector(".role").textContent = team && !vol ? `${role} — ${TEAMS[team]}` : role;
-  node.querySelector(".line").innerHTML = vol
-    ? "Proud to volunteer at the <b>7th Health Innovation Hackathon</b> — beyond visions and ideas, shaping the future of healthcare."
-    : "Proud to be part of the <b>7th Health Innovation Hackathon</b> — beyond visions and ideas, shaping the future of healthcare.";
-  node.querySelector(".hex").innerHTML = photo ? `<img src="${photo}" alt="">` : SILHOUETTE;
-  node.id = `post-${team || "general"}-${role.toLowerCase().replace(/\W+/g, "-")}`;
+  node.querySelector(".p1").textContent = volunteer ? "I’m proud to volunteer on the journey" : "I’m proud to be part of the journey";
+  node.querySelector(".name").textContent = name;
+  node.querySelector(".role").textContent = role;
+  node.querySelector(".photo").innerHTML = photo ? `<img src="${photo}" alt="">` : SILHOUETTE;
+  node.id = "post-" + (name + "-" + role).toLowerCase().replace(/\W+/g, "-");
   document.body.appendChild(node);
 }
 
-/* ?name=…&role=…&team=media&photo=URL renders one post; otherwise the samples */
+/* size each text line to the width it has in the original design */
+function fit() {
+  document.querySelectorAll(".t[data-w]").forEach(el => {
+    el.style.fontSize = "100px";
+    el.style.fontSize = (100 * el.dataset.w / el.scrollWidth) + "px";
+  });
+}
+
+/* ?name=…&role=…&photo=URL&volunteer=1 renders one post; otherwise the samples */
 const q = new URLSearchParams(location.search);
 const people = q.has("name")
-  ? [{ name: q.get("name"), role: q.get("role") || "Committee Member", team: q.get("team") || "", photo: q.get("photo") }]
+  ? [{ name: q.get("name"), role: q.get("role") || "Committee Member", photo: q.get("photo"), volunteer: q.has("volunteer") }]
   : [
-      { name: "Alhanouf Alhaqbani", role: "Deputy Team Leader", team: "" },
-      { name: "Full Name", role: "Committee Member", team: "media" },
-      { name: "Full Name", role: "Volunteer", team: "" },
+      { name: "Alhanouf Alhaqbani", role: "Team Deputy Leader" },
+      { name: "Full Name", role: "Media Committee Member" },
+      { name: "Full Name", role: "Volunteer", volunteer: true },
     ];
 people.forEach(render);
+document.fonts.ready.then(fit);
 </script>
 </body>
 </html>
