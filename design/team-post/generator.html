@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIH7 Team Post Generator</title>
+<meta name="description" content="Create your HIH7 LinkedIn post: add your name, role and photo, then download.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mada:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0442;
+  --panel: #150a63;
+  --line: rgba(196, 176, 255, .22);
+  --text: #f4f0ff;
+  --muted: #b9abef;
+  --accent: #9a72ff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--text); font-family: "Mada", "Segoe UI", sans-serif; min-height: 100vh; }
+
+header { padding: 28px 32px 0; display: flex; align-items: center; gap: 14px; }
+header img { width: 34px; height: auto; }
+header h1 { font-size: 20px; font-weight: 700; }
+header p { font-size: 15px; color: var(--muted); }
+
+main { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 32px; padding: 24px 32px 40px; align-items: start; max-width: 1500px; margin: 0 auto; }
+.preview canvas { width: 100%; height: auto; display: block; border-radius: 10px; box-shadow: 0 0 0 1px var(--line); background: #0d0550; }
+.preview small { display: block; margin-top: 10px; color: var(--muted); font-size: 14px; }
+
+form { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px; display: grid; gap: 18px; }
+label { display: grid; gap: 7px; font-size: 14px; font-weight: 600; color: var(--muted); }
+input[type=text], select { width: 100%; font: inherit; font-size: 16px; font-weight: 600; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+input[type=text]:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 3px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; text-align: center; padding: 8px; border-radius: 6px; font-size: 15px; font-weight: 700; color: var(--muted); cursor: pointer; }
+.seg input:checked + span { background: var(--accent); color: #fff; }
+.seg input:focus-visible + span { outline: 2px solid #fff; }
+
+.file { border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; color: var(--muted); font-size: 15px; }
+.file:hover, .file.drag { border-color: var(--accent); color: var(--text); }
+.file input { display: none; }
+.file b { color: var(--text); }
+.status { font-size: 14px; color: var(--muted); min-height: 1.2em; }
+.status.err { color: #ffb4c4; }
+
+.adjust { display: grid; gap: 10px; }
+.adjust[hidden] { display: none; }
+.range { display: grid; grid-template-columns: 82px 1fr; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.check { display: flex; align-items: center; gap: 9px; font-size: 14px; color: var(--muted); font-weight: 600; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+button { font: inherit; font-size: 17px; font-weight: 700; border: 0; border-radius: 8px; padding: 13px; cursor: pointer; }
+.primary { background: #fff; color: #1d0a8a; }
+.primary:hover { background: #e9e2ff; }
+.primary:disabled { opacity: .5; cursor: wait; }
+.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); font-size: 14px; padding: 9px; }
+
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; padding: 16px; }
+  header { padding: 20px 16px 0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="assets/hih-mark.png" alt="">
+  <div>
+    <h1>HIH7 Team Post</h1>
+    <p>Add your details and photo, then download your LinkedIn post.</p>
+  </div>
+</header>
+
+<main>
+  <section class="preview">
+    <canvas id="c" width="3200" height="1924" aria-label="Post preview"></canvas>
+    <small>3200 × 1924 PNG, ready for LinkedIn.</small>
+  </section>
+
+  <form id="f" autocomplete="off">
+    <label>Full name
+      <input type="text" id="name" value="Full Name" maxlength="40">
+    </label>
+
+    <div>
+      <label style="margin-bottom:7px">I am</label>
+      <div class="seg" role="radiogroup">
+        <label><input type="radio" name="kind" value="organizer" checked><span>Organizer</span></label>
+        <label><input type="radio" name="kind" value="volunteer"><span>Volunteer</span></label>
+      </div>
+    </div>
+
+    <label id="roleWrap">Role
+      <select id="role">
+        <option>Team Leader</option>
+        <option>Team Deputy Leader</option>
+        <option>Committee Leader</option>
+        <option>Committee Deputy Leader</option>
+        <option selected>Committee Member</option>
+        <option>Volunteer</option>
+      </select>
+    </label>
+
+    <label id="teamWrap">Committee
+      <select id="team">
+        <option value="">None</option>
+        <option>Media</option>
+        <option>Public Relations</option>
+        <option>Technical</option>
+        <option>Design</option>
+        <option>Content</option>
+        <option>Decor</option>
+        <option>Operations</option>
+        <option>Logistics</option>
+        <option>Protocol &amp; VIP</option>
+      </select>
+    </label>
+
+    <label class="file" id="drop">
+      <input type="file" id="photo" accept="image/*">
+      <span><b>Upload your photo</b><br>A clear headshot works best.</span>
+    </label>
+    <div class="status" id="status" aria-live="polite"></div>
+
+    <div class="adjust" id="adjust" hidden>
+      <label class="check"><input type="checkbox" id="cutout" checked> Remove background</label>
+      <div class="range">Size <input type="range" id="zoom" min="0.6" max="2.2" step="0.01" value="1"></div>
+      <div class="range">Left / right <input type="range" id="dx" min="-200" max="200" step="1" value="0"></div>
+      <div class="range">Up / down <input type="range" id="dy" min="-200" max="200" step="1" value="0"></div>
+      <button type="button" class="ghost" id="clear">Remove photo</button>
+    </div>
+
+    <button type="submit" class="primary" id="dl">Download PNG</button>
+  </form>
+</main>
+
+<script type="module">
+/* ============================================================
+   Draws the post exactly like linkedin.html, in a 1600 × 962
+   layout space rendered at 2x.
+============================================================ */
+const W = 1600, H = 962, S = 2;
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+const $ = id => document.getElementById(id);
+
+const load = src => new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = fail; i.src = src; });
+const A = {};
+const state = { photo: null, original: null, cut: null };
+
+/* ---------- text helpers ---------- */
+const font = (w, px) => `${w} ${px}px Mada`;
+function sizeFor(text, weight, width) {
+  ctx.font = font(weight, 100);
+  return 100 * width / ctx.measureText(text).width;
+}
+/* place text the way CSS does with line-height: 1 and the given top */
+function drawText(text, x, top, weight, px, fill, align = "left") {
+  ctx.font = font(weight, px);
+  const m = ctx.measureText(text);
+  const base = top + (px + m.fontBoundingBoxAscent - m.fontBoundingBoxDescent) / 2;
+  ctx.textAlign = align;
+  ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = fill;
+  ctx.fillText(text, x, base);
+  ctx.textAlign = "left";
+  return m.width;
+}
+
+/* ---------- photo layer ---------- */
+const FRAME = { x: 1066, y: 262, w: 432, h: 470 };
+
+function silhouette(g) {
+  const grad = g.createLinearGradient(0, 0, 0, FRAME.h);
+  grad.addColorStop(0, "#fff"); grad.addColorStop(.62, "#f1ebff"); grad.addColorStop(1, "rgba(201,179,255,.55)");
+  g.globalAlpha = .94; g.fillStyle = grad;
+  g.beginPath(); g.arc(216, 130, 123, 0, Math.PI * 2); g.fill();
+  g.fill(new Path2D("M4 470V350c0-60 40-96 110-96 30 34 64 50 102 50s72-16 102-50c70 0 110 36 110 96v120Z"));
+  g.globalAlpha = 1;
+}
+
+function photoLayer() {
+  const off = document.createElement("canvas");
+  off.width = FRAME.w * S; off.height = FRAME.h * S;
+  const g = off.getContext("2d");
+  g.scale(S, S);
+  const img = $("cutout").checked && state.cut ? state.cut : state.photo;
+  if (!img) {
+    silhouette(g);
+  } else {
+    const zoom = +$("zoom").value, dx = +$("dx").value, dy = +$("dy").value;
+    const isCut = img === state.cut || state.photoHasAlpha;
+    if (isCut) {
+      /* cut-out: sit on the bottom edge like the original silhouette */
+      const k = Math.min(FRAME.w / img.width, FRAME.h / img.height) * zoom;
+      const w = img.width * k, h = img.height * k;
+      g.drawImage(img, (FRAME.w - w) / 2 + dx, FRAME.h - h + dy, w, h);
+    } else {
+      /* plain photo: round frame in the same spot */
+      g.save();
+      g.beginPath(); g.arc(216, 210, 200, 0, Math.PI * 2); g.clip();
+      const k = Math.max(400 / img.width, 400 / img.height) * zoom;
+      const w = img.width * k, h = img.height * k;
+      g.drawImage(img, 216 - w / 2 + dx, 210 - h / 2 + dy, w, h);
+      g.restore();
+      g.lineWidth = 6; g.strokeStyle = "rgba(255,255,255,.9)";
+      g.beginPath(); g.arc(216, 210, 200, 0, Math.PI * 2); g.stroke();
+    }
+  }
+  /* fade the bottom into the glow, as in the template */
+  g.globalCompositeOperation = "destination-in";
+  const fade = g.createLinearGradient(0, 0, 0, FRAME.h);
+  fade.addColorStop(.72, "#000"); fade.addColorStop(1, "rgba(0,0,0,0)");
+  g.fillStyle = fade; g.fillRect(0, 0, FRAME.w, FRAME.h);
+  return off;
+}
+
+/* ---------- full render ---------- */
+function draw() {
+  const name = $("name").value.trim() || "Full Name";
+  const volunteer = document.querySelector("input[name=kind]:checked").value === "volunteer";
+  const team = $("team").value;
+  let role = volunteer ? "Volunteer" : $("role").value;
+  if (volunteer && team) role = `${team} Volunteer`;
+  else if (!volunteer && team && /Committee/.test(role)) role = role.replace("Committee", `${team} Committee`);
+  else if (!volunteer && team) role = `${role}, ${team}`;
+
+  ctx.setTransform(S, 0, 0, S, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+
+  /* background, cover */
+  const k = Math.max(W / A.bg.width, H / A.bg.height);
+  ctx.drawImage(A.bg, (W - A.bg.width * k) / 2, (H - A.bg.height * k) / 2, A.bg.width * k, A.bg.height * k);
+
+  /* lattice lines, top right */
+  const lg = ctx.createLinearGradient(1600, 0, 900, 760);
+  lg.addColorStop(0, "rgba(255,255,255,.5)"); lg.addColorStop(.55, "rgba(255,255,255,0)");
+  ctx.strokeStyle = lg; ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let i = -6; i < 14; i++) {
+    const x = 820 + i * 46;
+    ctx.moveTo(x, 0); ctx.lineTo(x + 520, 600);
+    ctx.moveTo(x + 520, 0); ctx.lineTo(x, 600);
+  }
+  ctx.stroke();
+
+  /* lockup */
+  ctx.drawImage(A.mark, 173, 73, 116, 116 * A.mark.height / A.mark.width);
+  ctx.drawImage(A.word, 110, 226, 219, 219 * A.word.height / A.word.width);
+
+  /* headline with the lavender gradient; sized from the original line */
+  const h1 = "Beyond Visions and Ideas";
+  const h1px = sizeFor("Beyond Visions and Ideas:", 700, 777);
+  ctx.font = font(700, h1px);
+  const h1w = ctx.measureText(h1).width;
+  const hg = ctx.createLinearGradient(90, 0, 90 + h1w, 0);
+  hg.addColorStop(0, "#c7b0ff"); hg.addColorStop(.55, "#a07aff"); hg.addColorStop(1, "#8c5cff");
+  drawText(h1, 90, 368, 700, h1px, hg);
+
+  drawText("Shaping the Future of Healthcare", 90, 496, 700, sizeFor("Shaping the Future of Healthcare", 700, 483), "#fff");
+  const pPx = sizeFor("I’m proud to be part of the journey", 600, 530);
+  drawText(volunteer ? "I’m proud to volunteer on the journey" : "I’m proud to be part of the journey", 90, 562, 600, pPx, "#a985ff");
+  drawText("at the 7th Health Innovation Hackathon", 90, 611, 600, sizeFor("at the 7th Health Innovation Hackathon", 600, 612), "#a985ff");
+  const wPx = sizeFor("Where innovation becomes the starting point", 700, 666);
+  drawText("Where innovation becomes the starting point", 90, 680, 700, wPx, "#fff");
+  drawText("for what comes next.", 90, 727, 700, wPx, "#fff");
+
+  /* glow, photo */
+  ctx.globalAlpha = .95;
+  ctx.drawImage(A.glow, 1000, 560, 580, 580 * A.glow.height / A.glow.width);
+  ctx.globalAlpha = 1;
+  ctx.drawImage(photoLayer(), FRAME.x, FRAME.y, FRAME.w, FRAME.h);
+
+  /* name plate */
+  ctx.fillStyle = "rgba(36, 18, 120, .62)"; ctx.fillRect(1063, 722, 431, 83);
+  ctx.fillStyle = "#9a72ff"; ctx.fillRect(1063, 722, 8, 83);
+  ctx.font = font(700, 30);
+  const namePx = Math.min(30, 30 * 380 / ctx.measureText(name).width);
+  drawText(name, 1099, 732, 700, namePx, "#fff");
+  ctx.font = font(600, 25);
+  const rw = ctx.measureText(role).width;
+  if (rw <= 295) drawText(role, 1394, 769, 600, 25, "#c4b0ff", "right");
+  else drawText(role, 1474, 769, 600, Math.min(25, 25 * 375 / rw), "#c4b0ff", "right");
+
+  /* hosts + rule */
+  ctx.drawImage(A.hosts, 1460, 880, 118, 118 * A.hosts.height / A.hosts.width);
+  ctx.fillStyle = "rgba(255,255,255,.55)"; ctx.fillRect(0, 943, 1434, 1);
+}
+
+/* ---------- photo upload + background removal ---------- */
+const status = (msg, err = false) => { $("status").textContent = msg; $("status").className = "status" + (err ? " err" : ""); };
+
+function hasAlpha(img) {
+  const c = document.createElement("canvas");
+  c.width = 64; c.height = 64;
+  const g = c.getContext("2d"); g.drawImage(img, 0, 0, 64, 64);
+  const d = g.getImageData(0, 0, 64, 64).data;
+  for (let i = 3; i < d.length; i += 4) if (d[i] < 250) return true;
+  return false;
+}
+
+/* crop a cut-out to its visible pixels so every person sits at the same scale */
+function trim(img) {
+  const c = document.createElement("canvas");
+  c.width = img.width; c.height = img.height;
+  const g = c.getContext("2d"); g.drawImage(img, 0, 0);
+  const d = g.getImageData(0, 0, c.width, c.height).data;
+  let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
+  for (let y = 0; y < c.height; y++) for (let x = 0; x < c.width; x++) {
+    if (d[(y * c.width + x) * 4 + 3] > 16) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  }
+  if (x1 <= x0 || y1 <= y0) return img;
+  const t = document.createElement("canvas");
+  t.width = x1 - x0 + 1; t.height = y1 - y0 + 1;
+  t.getContext("2d").drawImage(c, -x0, -y0);
+  return t;
+}
+
+let bgRemoval;
+async function cutOut(file) {
+  status("Removing background… the first time takes a little longer.");
+  try {
+    bgRemoval ??= await import("https://esm.sh/@imgly/background-removal@1.4.5");
+    const blob = await bgRemoval.removeBackground(file);
+    state.cut = trim(await load(URL.createObjectURL(blob)));
+    status("Background removed. Adjust the size and position if needed.");
+  } catch (e) {
+    console.error(e);
+    state.cut = null;
+    $("cutout").checked = false;
+    status("Couldn’t remove the background, so your photo is shown in a round frame instead.", true);
+  }
+  draw();
+}
+
+async function usePhoto(file) {
+  if (!file || !file.type.startsWith("image/")) return;
+  state.photo = await load(URL.createObjectURL(file));
+  state.photoHasAlpha = hasAlpha(state.photo);
+  if (state.photoHasAlpha) state.photo = trim(state.photo);
+  state.cut = null;
+  ["zoom", "dx", "dy"].forEach(id => $(id).value = id === "zoom" ? 1 : 0);
+  $("adjust").hidden = false;
+  if (state.photoHasAlpha) {
+    $("cutout").checked = false;
+    $("cutout").parentElement.hidden = true;
+    status("Transparent photo detected, used as is.");
+    draw();
+  } else {
+    $("cutout").parentElement.hidden = false;
+    draw();
+    if ($("cutout").checked) cutOut(file);
+  }
+  state.file = file;
+}
+
+$("photo").addEventListener("change", e => usePhoto(e.target.files[0]));
+const drop = $("drop");
+["dragenter", "dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("drag"); }));
+["dragleave", "drop"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove("drag"); }));
+drop.addEventListener("drop", e => usePhoto(e.dataTransfer.files[0]));
+
+$("cutout").addEventListener("change", () => {
+  if ($("cutout").checked && !state.cut && state.file) cutOut(state.file); else draw();
+});
+$("clear").addEventListener("click", () => {
+  Object.assign(state, { photo: null, cut: null, file: null, photoHasAlpha: false });
+  $("photo").value = ""; $("adjust").hidden = true; status(""); draw();
+});
+
+/* ---------- form ---------- */
+function syncKind() {
+  const vol = document.querySelector("input[name=kind]:checked").value === "volunteer";
+  $("roleWrap").hidden = vol;
+}
+document.querySelectorAll("input[name=kind]").forEach(r => r.addEventListener("change", () => { syncKind(); draw(); }));
+["name", "role", "team", "zoom", "dx", "dy"].forEach(id => $(id).addEventListener("input", draw));
+
+$("f").addEventListener("submit", e => {
+  e.preventDefault();
+  $("dl").disabled = true;
+  canvas.toBlob(blob => {
+    const a = document.createElement("a");
+    const slug = ($("name").value.trim() || "post").replace(/[^\p{L}\p{N}]+/gu, "-");
+    a.href = URL.createObjectURL(blob);
+    a.download = `HIH7-${slug}.png`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    $("dl").disabled = false;
+  }, "image/png");
+});
+
+/* ---------- start ---------- */
+const [bg, glow, mark, word, hosts] = await Promise.all(
+  ["assets/bg.jpg", "assets/glow.png", "assets/hih-mark.png", "assets/hih-wordmark.png", "assets/ksau-mushkat-white.png"].map(load));
+Object.assign(A, { bg, glow, mark, word, hosts });
+await Promise.all([600, 700].map(w => document.fonts.load(font(w, 40))));
+syncKind();
+draw();
+</script>
+</body>
+</html>
