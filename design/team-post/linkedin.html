@@ -6,182 +6,140 @@
 <title>HIH7 LinkedIn Team Posts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@100..125,400..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Mada:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   HIH7 — LinkedIn team post, landscape 1200 × 720 (export @2x)
-   Brand from the HIH7 brochure: electric blue-violet fading to
-   lavender, wide geometric type, the big "7", violet labels.
+   HIH7 — LinkedIn team post, 1200 × 720 (export @2x)
+   Follows the original Canva post: logo lockup top-left,
+   lavender headline, framed portrait with a name plate.
+   Brighter brand gradient + clean light planes instead of
+   neon streaks.
 ============================================================ */
 :root {
-  --indigo: #14026a;
-  --electric: #2b00da;
-  --violet: #6a2bff;
-  --label: #8a3dff;
-  --lavender: #d9c7ff;
+  --night: #12036e;
+  --indigo: #1d06a8;
+  --electric: #3a12e6;
+  --violet: #7b4dff;
+  --lilac: #b79cff;
+  --lavender: #ddd0ff;
   --white: #ffffff;
-  /* ITC Handel Gothic is the brand face; Saira Expanded is the free stand-in */
-  --display: "ITC Handel Gothic", "Saira", sans-serif;
-  --text: "Saira", "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0c0140; font-family: var(--text); padding: 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
-.wide { font-family: var(--display); font-stretch: 125%; }
+body { background: #0a0238; font-family: "Mada", "Segoe UI", sans-serif; padding: 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
 
 .post {
-  width: 1200px; height: 720px; color: var(--white); position: relative; overflow: hidden;
+  width: 1200px; height: 720px; position: relative; overflow: hidden; color: var(--white);
   background:
-    radial-gradient(700px 520px at 100% 0%, #c9a6ff 0%, rgba(150, 90, 255, .5) 38%, transparent 72%),
-    linear-gradient(180deg, #3a12e6 0%, var(--electric) 50%, #2200b0 100%);
+    radial-gradient(520px 420px at 82% 46%, rgba(183, 156, 255, .45), transparent 70%),
+    radial-gradient(700px 500px at 100% 0%, rgba(214, 190, 255, .55), transparent 70%),
+    linear-gradient(120deg, var(--night) 0%, var(--indigo) 38%, var(--electric) 70%, #6a3cff 100%);
 }
+.planes { position: absolute; inset: 0; width: 100%; height: 100%; }
 
+/* ---- logo lockup, as in the original ---- */
+.lockup { position: absolute; left: 72px; top: 52px; display: flex; flex-direction: column; align-items: flex-start; }
+.lockup img { width: 84px; height: 84px; filter: brightness(0) invert(1); margin-left: 34px; }
+.lockup .ar { margin-top: 14px; font-family: "IBM Plex Sans Arabic", sans-serif; font-size: 20px; font-weight: 700; direction: rtl; }
+.lockup .en { font-size: 14px; font-weight: 600; letter-spacing: .04em; }
 
-/* ---- header ---- */
-.head { position: absolute; top: 36px; left: 64px; right: 64px; display: flex; justify-content: space-between; align-items: center; }
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand img { width: 46px; height: 46px; filter: brightness(0) invert(1); }
-.brand b { font-size: 18px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; line-height: 1.1; }
-.edition { font-size: 14px; font-weight: 800; letter-spacing: .12em; background: var(--label); padding: 8px 14px; border-radius: 6px; }
+/* ---- message ---- */
+.msg { position: absolute; left: 72px; top: 262px; width: 640px; }
+.msg h1 { font-size: 54px; font-weight: 800; line-height: 1.02; letter-spacing: -.01em;
+  background: linear-gradient(90deg, var(--lavender), var(--lilac) 70%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.msg h2 { margin-top: 10px; font-size: 27px; font-weight: 700; }
+.msg p { margin-top: 22px; font-size: 22px; line-height: 1.45; font-weight: 500; color: #ece6ff; max-width: 560px; }
+.msg p b { color: var(--white); font-weight: 700; }
 
-/* ---- message, left ---- */
-.msg { position: absolute; left: 64px; top: 168px; width: 640px; }
-.msg .lead { font-size: 22px; font-weight: 600; color: var(--lavender); }
-.msg h1 { font-size: 44px; font-weight: 800; line-height: 1.06; margin-top: 6px; }
-.committee { margin-top: 20px; display: inline-flex; align-items: center; gap: 10px; background: rgba(20, 2, 106, .55); border: 1.5px solid rgba(217, 199, 255, .6); border-radius: 6px; padding: 7px 14px 7px 10px; font-size: 17px; font-weight: 700; }
-.committee svg { width: 20px; height: 20px; color: var(--lavender); }
-.committee:empty { display: none; }
+.facts { position: absolute; left: 72px; bottom: 74px; display: flex; gap: 14px; }
+.facts span { font-size: 16px; font-weight: 700; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35); }
 
-.facts { position: absolute; left: 64px; top: 432px; display: flex; gap: 40px; }
-.fact { display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 600; line-height: 1.25; }
-.fact i { width: 40px; height: 40px; border-radius: 50%; background: var(--lavender); color: var(--electric); display: grid; place-items: center; flex: none; }
-.fact i svg { width: 21px; height: 21px; }
-.slogan { position: absolute; left: 64px; top: 516px; font-size: 22px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--lavender); line-height: 1.2; }
+/* ---- portrait: arched frame + name plate ---- */
+.portrait { position: absolute; right: 120px; top: 118px; width: 330px; height: 420px; }
+.portrait .frame { position: absolute; inset: -14px; border-radius: 180px 180px 24px 24px; border: 1.5px solid rgba(221, 208, 255, .7); }
+.portrait .photo { position: absolute; inset: 0; border-radius: 166px 166px 18px 18px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(221,208,255,.85)); display: flex; align-items: flex-end; justify-content: center; }
+.portrait .photo img { width: 100%; height: 100%; object-fit: cover; }
+.portrait .photo svg { width: 250px; height: 300px; }
+.plate { position: absolute; left: -40px; right: -40px; bottom: -34px; background: rgba(18, 3, 110, .82); border-left: 6px solid var(--violet); padding: 14px 22px 14px 22px; }
+.plate .name { font-size: 28px; font-weight: 800; line-height: 1.1; }
+.plate .role { margin-top: 3px; font-size: 18px; font-weight: 600; color: var(--lavender); }
 
-/* ---- person, right: round photo over pill bars, white name tag ---- */
-.person { position: absolute; right: 56px; top: 120px; width: 420px; height: 420px; }
-.bar { position: absolute; height: 24px; border-radius: 12px; }
-.photo { position: absolute; left: 70px; top: 30px; width: 280px; height: 280px; border-radius: 50%; overflow: hidden; background: var(--lavender); border: 8px solid var(--white); display: flex; align-items: flex-end; justify-content: center; }
-.photo img { width: 100%; height: 100%; object-fit: cover; }
-.photo svg { width: 200px; height: 220px; }
-.who { position: absolute; left: 50%; top: 284px; transform: translateX(-50%); text-align: center; white-space: nowrap; }
-.who .name { display: inline-block; background: var(--white); color: var(--indigo); font-size: 24px; font-weight: 800; padding: 10px 22px; border-radius: 8px; box-shadow: 0 6px 0 var(--label); }
-.who .role { margin-top: 16px; font-size: 18px; font-weight: 600; color: var(--white); }
-
-/* ---- footer band: hosts + channels ---- */
-.foot { position: absolute; left: 0; right: 0; bottom: 0; height: 92px; background: var(--indigo); padding: 0 64px; display: flex; align-items: center; justify-content: space-between; }
-.foot small { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--lavender); margin-bottom: 4px; }
-.foot .hosts span { font-size: 15px; font-weight: 700; }
-.foot .links { display: flex; gap: 22px; font-size: 14px; font-weight: 700; align-items: center; border-left: 1px solid rgba(217,199,255,.4); padding-left: 24px; }
-.foot .links span { display: inline-flex; align-items: center; gap: 7px; }
-.foot .links svg { width: 17px; height: 17px; }
+/* ---- footer rule + hosts, as in the original ---- */
+.foot { position: absolute; left: 72px; right: 72px; bottom: 30px; display: flex; align-items: center; gap: 18px; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--lavender); white-space: nowrap; }
+.foot::before { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,.55); order: 1; }
+.foot span { order: 2; }
 </style>
 </head>
 <body>
 
 <template id="tpl">
   <section class="post">
+    <!-- light planes echoing the chevrons of the HIH7 mark -->
+    <svg class="planes" viewBox="0 0 1200 720" preserveAspectRatio="none" aria-hidden="true">
+      <polygon points="690,0 900,0 1200,420 1200,620" fill="#fff" opacity=".06"/>
+      <polygon points="760,720 1010,300 1080,300 860,720" fill="#fff" opacity=".07"/>
+      <polygon points="0,720 0,560 520,720" fill="#fff" opacity=".04"/>
+      <line x1="640" y1="720" x2="1200" y2="140" stroke="#ddd0ff" stroke-opacity=".35" stroke-width="1"/>
+      <line x1="700" y1="0" x2="1200" y2="520" stroke="#ddd0ff" stroke-opacity=".22" stroke-width="1"/>
+    </svg>
 
-    <div class="head">
-      <div class="brand"><img src="../../assets/logo.png" alt=""><b class="wide">Health Innovation<br>Hackathon</b></div>
-      <div class="edition wide">7TH EDITION · 2027</div>
+    <div class="lockup">
+      <img src="../../assets/logo.png" alt="">
+      <div class="ar">هاكاثون الابتكار الصحي</div>
+      <div class="en">Health Innovation Hackathon</div>
     </div>
 
     <div class="msg">
-      <div class="lead"></div>
-      <h1 class="wide">7th Health Innovation Hackathon</h1>
-      <div class="committee"></div>
+      <h1>Beyond Visions and Ideas</h1>
+      <h2>Shaping the Future of Healthcare</h2>
+      <p></p>
     </div>
 
-    <div class="facts">
-      <div class="fact"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></i><span>KSAU-HS<br>Riyadh, Saudi Arabia</span></div>
-      <div class="fact"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></i><span>23–25 January<br>2027</span></div>
-    </div>
+    <div class="facts"><span>23–25 January 2027</span><span>KSAU-HS, Riyadh</span></div>
 
-    <div class="slogan wide">Innovating for<br>a nation’s health</div>
-
-    <div class="person">
-      <div class="bar" style="left:0;     top:70px;  width:150px; background:rgba(255,255,255,.85)"></div>
-      <div class="bar" style="left:290px; top:70px;  width:130px; background:var(--label)"></div>
-      <div class="bar" style="left:20px;  top:112px; width:120px; background:var(--indigo)"></div>
-      <div class="bar" style="left:300px; top:112px; width:100px; background:var(--lavender)"></div>
-      <div class="bar" style="left:0;     top:154px; width:110px; background:var(--label)"></div>
-      <div class="bar" style="left:320px; top:154px; width:100px; background:rgba(255,255,255,.85)"></div>
-      <div class="bar" style="left:30px;  top:196px; width:130px; background:var(--lavender)"></div>
-      <div class="bar" style="left:280px; top:196px; width:120px; background:var(--indigo)"></div>
+    <div class="portrait">
+      <div class="frame"></div>
       <div class="photo"></div>
-      <div class="who"><div class="name wide"></div><div class="role"></div></div>
+      <div class="plate"><div class="name"></div><div class="role"></div></div>
     </div>
 
-    <div class="foot">
-      <div class="hosts"><small>Hosted by</small><span>KSAU-HS · Mushkat Incubator for Health Innovation · Deanship of Student Affairs</span></div>
-      <div class="links">
-        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm7 0h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4V9.5Z"/></svg>Health Innovation Hackathon</span>
-        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3.2l-7 8 8.3 10h-6.5l-5.1-6.2L4.6 21H1.4l7.5-8.6L1 3h6.7l4.6 5.6L17.5 3Zm-1.1 16.2h1.8L6.7 4.7H4.8l11.6 14.5Z"/></svg>@MUSHKAT_KSAUHS</span>
-      </div>
-    </div>
+    <div class="foot"><span>KSAU-HS · Mushkat Incubator for Health Innovation</span></div>
   </section>
 </template>
 
 <script>
-/* Committee icons — same set as the website's "Teams" section */
-const ICONS = {
-  media: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
-  pr: '<path d="M11 17a5 5 0 0 1-5 5H2v-4a5 5 0 0 1 5-5"/><path d="m14 7 3-3 3 3-3 3"/><path d="M9.5 14.5 17 7"/><path d="M22 12v8a2 2 0 0 1-2 2h-8"/>',
-  tech: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
-  design: '<circle cx="13.5" cy="6.5" r="2.5"/><path d="M17 2a10 10 0 1 0 5 8.66c0-1.45-1.18-2.66-2.63-2.66H17a3 3 0 0 1-3-3V2z" transform="scale(-1,1) translate(-24,0)"/>',
-  content: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
-  decor: '<path d="M2 20h20"/><path d="M4 20V8l8-5 8 5v12"/><path d="M9 20v-8h6v8"/>',
-  operations: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>',
-  logistics: '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
-  protocol: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
-  volunteer: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
-};
-
 const TEAMS = {
-  media: "Media Committee", pr: "Public Relations Committee", tech: "Technical Committee",
-  design: "Design Committee", content: "Content Committee", decor: "Decor Committee",
-  operations: "Operations Committee", logistics: "Logistics Committee",
-  protocol: "Protocol & VIP Committee", volunteer: "",
+  media: "Media", pr: "Public Relations", tech: "Technical", design: "Design",
+  content: "Content", decor: "Decor", operations: "Operations",
+  logistics: "Logistics", protocol: "Protocol & VIP",
 };
 
-/* One line per committee — what that team actually does for the event */
-const LINES = {
-  media: "capturing every moment of",
-  pr: "connecting partners and speakers with",
-  tech: "building the digital backbone of",
-  design: "shaping the visual identity of",
-  content: "telling the story of",
-  decor: "designing the space for",
-  operations: "keeping things running at",
-  logistics: "making it all possible at",
-  protocol: "welcoming our guests to",
-  volunteer: "helping make",
-};
+/* placeholder silhouette until a photo is supplied */
+const SILHOUETTE = '<svg viewBox="0 0 250 300"><circle cx="125" cy="100" r="66" fill="#8f6bff" opacity=".55"/><path d="M10 300c0-80 52-128 115-128s115 48 115 128Z" fill="#8f6bff" opacity=".55"/></svg>';
 
-/* placeholder silhouette until a cut-out photo is supplied */
-const SILHOUETTE = '<svg viewBox="0 0 200 220"><circle cx="100" cy="78" r="52" fill="#fff"/><path d="M10 220c0-62 40-100 90-100s90 38 90 100Z" fill="#fff"/></svg>';
+function message(role, team) {
+  const where = "the <b>7th Health Innovation Hackathon</b>, where innovation becomes the starting point for what comes next.";
+  if (role === "Volunteer") return `Proud to volunteer at ${where}`;
+  return `Proud to be part of the <b>${team ? TEAMS[team] + " team" : "organizing team"}</b> at ${where}`;
+}
 
 function render({ name, role, team, photo }) {
   const node = document.getElementById("tpl").content.firstElementChild.cloneNode(true);
-  const vol = role === "Volunteer";
-  node.querySelector(".lead").textContent = vol ? "I’m volunteering at the" : "I’m part of the organizing team at the";
-  node.querySelector(".committee").innerHTML = team === "volunteer" ? "" :
-    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[team]}</svg>${TEAMS[team]}`;
+  node.querySelector(".msg p").innerHTML = message(role, team);
   node.querySelector(".name").textContent = name;
-  node.querySelector(".role").textContent = vol ? "Volunteer" : role;
+  node.querySelector(".role").textContent = role === "Volunteer" || !team ? role : `${role} · ${TEAMS[team]}`;
   node.querySelector(".photo").innerHTML = photo ? `<img src="${photo}" alt="">` : SILHOUETTE;
-  node.id = `post-${team}-${role.toLowerCase().replace(/\W+/g, "-")}`;
+  node.id = `post-${team || "general"}-${role.toLowerCase().replace(/\W+/g, "-")}`;
   document.body.appendChild(node);
 }
 
 /* ?name=…&role=…&team=media&photo=URL renders one post; otherwise the samples */
 const q = new URLSearchParams(location.search);
 const people = q.has("name")
-  ? [{ name: q.get("name"), role: q.get("role") || "Member", team: q.get("team") || "media", photo: q.get("photo") }]
+  ? [{ name: q.get("name"), role: q.get("role") || "Committee Member", team: q.get("team") || "", photo: q.get("photo") }]
   : [
-      { name: "Alhanouf Alhaqbani", role: "Organizers Team Leader", team: "operations" },
+      { name: "Alhanouf Alhaqbani", role: "Deputy Team Leader", team: "" },
       { name: "Full Name", role: "Committee Member", team: "media" },
-      { name: "Full Name", role: "Deputy Lead", team: "tech" },
       { name: "Full Name", role: "Volunteer", team: "logistics" },
     ];
 people.forEach(render);
