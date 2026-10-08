@@ -56,7 +56,7 @@ body { background: #0a0238; font-family: "Mada", sans-serif; padding: 40px; disp
     <img class="mark" src="assets/hih-mark.png" alt="">
     <img class="wordmark" src="assets/hih-wordmark.png" alt="Health Innovation Hackathon">
 
-    <div class="t h1" data-w="777">Beyond Visions and Ideas:</div>
+    <div class="t h1" data-w="777" data-ref="Beyond Visions and Ideas:">Beyond Visions and Ideas</div>
     <div class="t h2" data-w="483">Shaping the Future of Healthcare</div>
     <div class="t p1" data-w="530"></div>
     <div class="t p2" data-w="612">at the 7th Health Innovation Hackathon</div>
@@ -89,8 +89,11 @@ function render({ name, role, photo, volunteer }) {
 /* size each text line to the width it has in the original design */
 function fit() {
   document.querySelectorAll(".t[data-w]").forEach(el => {
+    const text = el.textContent;
+    if (el.dataset.ref) el.textContent = el.dataset.ref; /* size from the original line, colon included */
     el.style.fontSize = "100px";
     el.style.fontSize = (100 * el.dataset.w / el.scrollWidth) + "px";
+    el.textContent = text;
   });
 }
 
