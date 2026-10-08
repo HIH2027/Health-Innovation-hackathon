@@ -102,7 +102,7 @@ button { font: inherit; font-size: 17px; font-weight: 700; border: 0; border-rad
       <label style="margin-bottom:7px">I am</label>
       <div class="seg" role="radiogroup">
         <label><input type="radio" name="kind" value="organizer" checked><span>Organizer</span></label>
-        <label><input type="radio" name="kind" value="volunteer"><span>Volunteer</span></label>
+        <label><input type="radio" name="kind" value="member"><span>Member</span></label>
       </div>
     </div>
 
@@ -154,7 +154,6 @@ button { font: inherit; font-size: 17px; font-weight: 700; border: 0; border-rad
         <option>I’m proud to be part of the journey</option>
         <option>I’m proud to lead the journey</option>
         <option>I’m proud to support the journey</option>
-        <option>I’m proud to volunteer on the journey</option>
         <option value="custom">Other (type your own)</option>
       </select>
     </label>
@@ -265,16 +264,16 @@ function photoLayer() {
 /* ---------- full render ---------- */
 function draw() {
   const name = [$("title").value, $("name").value.trim() || "Full Name"].filter(Boolean).join(" ");
-  const volunteer = document.querySelector("input[name=kind]:checked").value === "volunteer";
+  const member = document.querySelector("input[name=kind]:checked").value === "member";
   const group = $("role").selectedOptions[0].dataset.group;
   const team = $("team").value;
   let role;
-  if (volunteer) role = team ? `${team} Volunteer` : "Volunteer";
+  if (member) role = team ? `${team} Team Member` : "Member";
   else if (group === "custom") role = $("custom").value.trim() || "Your Role";
   else if (group !== "team" || !team) role = $("role").value;
   else if (/Committee/.test($("role").value)) role = $("role").value.replace("Committee", `${team} Committee`);
   else role = `${$("role").value}, ${team}`;
-  const lead = !volunteer && group === "lead";
+  const lead = !member && group === "lead";
 
   ctx.setTransform(S, 0, 0, S, 0, 0);
   ctx.clearRect(0, 0, W, H);
@@ -310,8 +309,7 @@ function draw() {
 
   drawText("Shaping the Future of Healthcare", 90, 496, 700, sizeFor("Shaping the Future of Healthcare", 700, 483), "#fff");
   const pPx = sizeFor("I’m proud to be part of the journey", 600, 530);
-  const auto = volunteer ? "I’m proud to volunteer on the journey"
-    : lead ? "I’m proud to lead the journey"
+  const auto = lead ? "I’m proud to lead the journey"
     : "I’m proud to be part of the journey";
   const pick = $("line").value;
   const journey = pick === "auto" ? auto : pick === "custom" ? ($("lineCustom").value.trim() || auto) : pick;
@@ -427,7 +425,7 @@ $("clear").addEventListener("click", () => {
 
 /* ---------- form ---------- */
 function syncKind() {
-  const vol = document.querySelector("input[name=kind]:checked").value === "volunteer";
+  const vol = document.querySelector("input[name=kind]:checked").value === "member";
   const group = $("role").selectedOptions[0].dataset.group;
   $("roleWrap").hidden = vol;
   $("customWrap").hidden = vol || group !== "custom";

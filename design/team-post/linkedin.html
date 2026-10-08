@@ -76,9 +76,9 @@ body { background: #0a0238; font-family: "Mada", sans-serif; padding: 40px; disp
 /* placeholder until a cut-out photo is supplied */
 const SILHOUETTE = '<svg viewBox="0 0 432 470"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".62" stop-color="#f1ebff"/><stop offset="1" stop-color="#c9b3ff" stop-opacity=".55"/></linearGradient></defs><g fill="url(#sg)" opacity=".94"><circle cx="216" cy="130" r="123"/><path d="M4 470V350c0-60 40-96 110-96 30 34 64 50 102 50s72-16 102-50c70 0 110 36 110 96v120Z"/></g></svg>';
 
-function render({ name, role, photo, volunteer }) {
+function render({ name, role, photo }) {
   const node = document.getElementById("tpl").content.firstElementChild.cloneNode(true);
-  node.querySelector(".p1").textContent = volunteer ? "I’m proud to volunteer on the journey" : "I’m proud to be part of the journey";
+  node.querySelector(".p1").textContent = "I’m proud to be part of the journey";
   node.querySelector(".name").textContent = name;
   node.querySelector(".role").textContent = role;
   node.querySelector(".photo").innerHTML = photo ? `<img src="${photo}" alt="">` : SILHOUETTE;
@@ -97,14 +97,14 @@ function fit() {
   });
 }
 
-/* ?name=…&role=…&photo=URL&volunteer=1 renders one post; otherwise the samples */
+/* ?name=…&role=…&photo=URL renders one post; otherwise the samples */
 const q = new URLSearchParams(location.search);
 const people = q.has("name")
-  ? [{ name: q.get("name"), role: q.get("role") || "Committee Member", photo: q.get("photo"), volunteer: q.has("volunteer") }]
+  ? [{ name: q.get("name"), role: q.get("role") || "Committee Member", photo: q.get("photo") }]
   : [
       { name: "Alhanouf Alhaqbani", role: "Team Deputy Leader" },
       { name: "Full Name", role: "Media Committee Member" },
-      { name: "Full Name", role: "Volunteer", volunteer: true },
+      { name: "Full Name", role: "Media Team Member" },
     ];
 people.forEach(render);
 document.fonts.ready.then(fit);
