@@ -1,4 +1,4 @@
 {
   "cleanUrls": true,
-  "rewrites": [{ "source": "/", "destination": "/generator.html" }]
+  "rewrites": [{ "source": "/", "destination": "/generator" }]
 }
