@@ -40,6 +40,7 @@ input[type=text]:focus, select:focus { outline: 2px solid var(--accent); outline
 .seg input:checked + span { background: var(--accent); color: #fff; }
 .seg input:focus-visible + span { outline: 2px solid #fff; }
 
+.row { display: grid; grid-template-columns: 92px 1fr; gap: 10px; }
 .file { border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; color: var(--muted); font-size: 15px; }
 .file:hover, .file.drag { border-color: var(--accent); color: var(--text); }
 .file input { display: none; }
@@ -83,9 +84,19 @@ button { font: inherit; font-size: 17px; font-weight: 700; border: 0; border-rad
   </section>
 
   <form id="f" autocomplete="off">
-    <label>Full name
-      <input type="text" id="name" value="Full Name" maxlength="40">
-    </label>
+    <div class="row">
+      <label>Title
+        <select id="title">
+          <option value="">None</option>
+          <option>Prof.</option>
+          <option>Dr.</option>
+          <option>Eng.</option>
+        </select>
+      </label>
+      <label>Full name
+        <input type="text" id="name" value="Full Name" maxlength="40">
+      </label>
+    </div>
 
     <div>
       <label style="margin-bottom:7px">I am</label>
@@ -97,13 +108,29 @@ button { font: inherit; font-size: 17px; font-weight: 700; border: 0; border-rad
 
     <label id="roleWrap">Role
       <select id="role">
-        <option>Team Leader</option>
-        <option>Team Deputy Leader</option>
-        <option>Committee Leader</option>
-        <option>Committee Deputy Leader</option>
-        <option selected>Committee Member</option>
-        <option>Volunteer</option>
+        <optgroup label="Leadership">
+          <option data-group="lead">Chairman</option>
+          <option data-group="lead">Program Leader</option>
+          <option data-group="lead">Deputy Program Leader</option>
+        </optgroup>
+        <optgroup label="Deanship of Student Affairs">
+          <option data-group="dsa" value="Deanship of Student Affairs">Deanship of Student Affairs staff</option>
+        </optgroup>
+        <optgroup label="Teams and committees">
+          <option data-group="team">Team Leader</option>
+          <option data-group="team">Team Deputy Leader</option>
+          <option data-group="team">Committee Leader</option>
+          <option data-group="team">Committee Deputy Leader</option>
+          <option data-group="team" selected>Committee Member</option>
+        </optgroup>
+        <optgroup label="Other">
+          <option data-group="custom" value="custom">Other (type your role)</option>
+        </optgroup>
       </select>
+    </label>
+
+    <label id="customWrap" hidden>Your role
+      <input type="text" id="custom" placeholder="e.g. Head of Judging" maxlength="40">
     </label>
 
     <label id="teamWrap">Committee
@@ -119,6 +146,21 @@ button { font: inherit; font-size: 17px; font-weight: 700; border: 0; border-rad
         <option>Logistics</option>
         <option>Protocol &amp; VIP</option>
       </select>
+    </label>
+
+    <label>Your line
+      <select id="line">
+        <option value="auto">Automatic (matches your role)</option>
+        <option>I’m proud to be part of the journey</option>
+        <option>I’m proud to lead the journey</option>
+        <option>I’m proud to support the journey</option>
+        <option>I’m proud to volunteer on the journey</option>
+        <option value="custom">Other (type your own)</option>
+      </select>
+    </label>
+
+    <label id="lineCustomWrap" hidden>Your own line
+      <input type="text" id="lineCustom" maxlength="48" placeholder="I’m proud to mentor the teams">
     </label>
 
     <label class="file" id="drop">
@@ -222,13 +264,17 @@ function photoLayer() {
 
 /* ---------- full render ---------- */
 function draw() {
-  const name = $("name").value.trim() || "Full Name";
+  const name = [$("title").value, $("name").value.trim() || "Full Name"].filter(Boolean).join(" ");
   const volunteer = document.querySelector("input[name=kind]:checked").value === "volunteer";
+  const group = $("role").selectedOptions[0].dataset.group;
   const team = $("team").value;
-  let role = volunteer ? "Volunteer" : $("role").value;
-  if (volunteer && team) role = `${team} Volunteer`;
-  else if (!volunteer && team && /Committee/.test(role)) role = role.replace("Committee", `${team} Committee`);
-  else if (!volunteer && team) role = `${role}, ${team}`;
+  let role;
+  if (volunteer) role = team ? `${team} Volunteer` : "Volunteer";
+  else if (group === "custom") role = $("custom").value.trim() || "Your Role";
+  else if (group !== "team" || !team) role = $("role").value;
+  else if (/Committee/.test($("role").value)) role = $("role").value.replace("Committee", `${team} Committee`);
+  else role = `${$("role").value}, ${team}`;
+  const lead = !volunteer && group === "lead";
 
   ctx.setTransform(S, 0, 0, S, 0, 0);
   ctx.clearRect(0, 0, W, H);
@@ -264,7 +310,13 @@ function draw() {
 
   drawText("Shaping the Future of Healthcare", 90, 496, 700, sizeFor("Shaping the Future of Healthcare", 700, 483), "#fff");
   const pPx = sizeFor("I’m proud to be part of the journey", 600, 530);
-  drawText(volunteer ? "I’m proud to volunteer on the journey" : "I’m proud to be part of the journey", 90, 562, 600, pPx, "#a985ff");
+  const auto = volunteer ? "I’m proud to volunteer on the journey"
+    : lead ? "I’m proud to lead the journey"
+    : "I’m proud to be part of the journey";
+  const pick = $("line").value;
+  const journey = pick === "auto" ? auto : pick === "custom" ? ($("lineCustom").value.trim() || auto) : pick;
+  ctx.font = font(600, pPx);
+  drawText(journey, 90, 562, 600, Math.min(pPx, pPx * 820 / ctx.measureText(journey).width), "#a985ff");
   drawText("at the 7th Health Innovation Hackathon", 90, 611, 600, sizeFor("at the 7th Health Innovation Hackathon", 600, 612), "#a985ff");
   const wPx = sizeFor("Where innovation becomes the starting point", 700, 666);
   drawText("Where innovation becomes the starting point", 90, 680, 700, wPx, "#fff");
@@ -376,10 +428,15 @@ $("clear").addEventListener("click", () => {
 /* ---------- form ---------- */
 function syncKind() {
   const vol = document.querySelector("input[name=kind]:checked").value === "volunteer";
+  const group = $("role").selectedOptions[0].dataset.group;
   $("roleWrap").hidden = vol;
+  $("customWrap").hidden = vol || group !== "custom";
+  $("teamWrap").hidden = !vol && group !== "team";
 }
 document.querySelectorAll("input[name=kind]").forEach(r => r.addEventListener("change", () => { syncKind(); draw(); }));
-["name", "role", "team", "zoom", "dx", "dy"].forEach(id => $(id).addEventListener("input", draw));
+$("role").addEventListener("input", syncKind);
+$("line").addEventListener("input", () => { $("lineCustomWrap").hidden = $("line").value !== "custom"; });
+["title", "name", "role", "custom", "team", "line", "lineCustom", "zoom", "dx", "dy"].forEach(id => $(id).addEventListener("input", draw));
 
 $("f").addEventListener("submit", e => {
   e.preventDefault();
