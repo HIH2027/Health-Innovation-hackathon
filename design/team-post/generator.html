@@ -156,6 +156,7 @@ button { font: inherit; font-size: 17px; font-weight: 700; border: 0; border-rad
         <option>Operations</option>
         <option>Logistics</option>
         <option>Protocol &amp; VIP</option>
+        <option>Solution Makers Track</option>
         <option value="custom">Other (type your committee)</option>
       </select>
     </label>
@@ -284,9 +285,10 @@ function draw() {
   const group = $("role").selectedOptions[0].dataset.group;
   const team = $("team").value === "custom" ? $("teamCustom").value.trim() : $("team").value;
   let role;
-  if (member) role = team ? `${team} Team Member` : "Member";
+  if (member) role = team ? `${team} Team Member` : "Member";  /* tracks read "<Track> Team Member" too */
   else if (group === "custom") role = $("custom").value.trim() || "Your Role";
   else if (group !== "team" || !team) role = $("role").value;
+  else if (/Track$/.test(team)) role = $("role").value.replace(/Committee|Team/, `${team} Team`);
   else if (/Committee/.test($("role").value)) role = $("role").value.replace("Committee", `${team} Committee`);
   else role = `${$("role").value}, ${team}`;
   const lead = !member && group === "lead";
